@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_content_heading_blocks",
+  "info": {
+    "displayName": "headingBlock"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": [
+        "h2",
+        "h3",
+        "h4"
+      ]
+    }
+  },
+  "config": {}
+}

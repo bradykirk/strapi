@@ -14,6 +14,7 @@
     "featuredimage": {
       "type": "media",
       "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "files",
@@ -21,11 +22,31 @@
         "audios"
       ]
     },
-    "sample": {
-      "type": "text"
-    },
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "excerpt": {
+      "type": "text",
+      "required": true
+    },
+    "content": {
+      "type": "dynamiczone",
+      "components": [
+        "content.textblock",
+        "media.image-block",
+        "content.heading-block",
+        "content.quote-block"
+      ]
+    },
+    "author": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::author.author"
     }
   }
 }
