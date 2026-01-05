@@ -16,6 +16,11 @@ export default {
           Bucket: process.env.B2_BUCKET_NAME,
         },
       },
+      actionOptions: {
+        upload: {},
+        uploadStream: {},
+        delete: {},
+      },
     },
   },
 };
