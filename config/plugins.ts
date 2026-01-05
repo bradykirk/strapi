@@ -3,6 +3,7 @@ export default {
     config: {
       provider: 'aws-s3',
       providerOptions: {
+        baseUrl: process.env.B2_PUBLIC_URL,
         s3Options: {
           credentials: {
             accessKeyId: process.env.B2_ACCESS_KEY_ID,
@@ -15,11 +16,6 @@ export default {
         params: {
           Bucket: process.env.B2_BUCKET_NAME,
         },
-      },
-      actionOptions: {
-        upload: {},
-        uploadStream: {},
-        delete: {},
       },
     },
   },
