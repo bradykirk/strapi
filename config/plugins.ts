@@ -1,16 +1,20 @@
-export default ({ env }) => ({
+export default {
   upload: {
     config: {
       provider: 'aws-s3',
       providerOptions: {
-        accessKeyId: env('B2_ACCESS_KEY_ID'),
-        secretAccessKey: env('B2_SECRET_ACCESS_KEY'),
-        endpoint: env('B2_ENDPOINT'),
-        region: 'us-east-005',
+        s3Options: {
+          credentials: {
+            accessKeyId: process.env.B2_KEY_ID,
+            secretAccessKey: process.env.B2_APPLICATION_KEY,
+          },
+          endpoint: process.env.B2_ENDPOINT,
+          region: process.env.B2_REGION,
+        },
         params: {
-          Bucket: env('B2_BUCKET_NAME'),
+          Bucket: process.env.B2_BUCKET,
         },
       },
     },
   },
-});
+};
