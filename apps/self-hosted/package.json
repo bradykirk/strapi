@@ -8,9 +8,15 @@
     "deploy": "strapi deploy"
   },
   "dependencies": {
+    "@strapi/plugin-users-permissions": "workspace:*",
     "@strapi/provider-upload-aws-s3": "workspace:*",
+    "@strapi/strapi": "workspace:*",
     "better-sqlite3": "12.4.1",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.22.3",
+    "styled-components": "6.1.8"
   },
   "strapi": {
     "uuid": "9580571c-844b-4c7f-8778-11dc2a9f7624",
