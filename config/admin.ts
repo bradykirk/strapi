@@ -30,7 +30,7 @@ export default ({ env }) => ({
 
         if (uid === 'api::blog.blog') {
           const pathname = `/${document.category}/${document.slug}`;
-          return `${CLIENT_URL}/api/preview?url=${pathname}&secret=${PREVIEW_SECRET}&status=${status}`;
+          return `${CLIENT_URL}/api/preview?url=${encodeURIComponent(pathname)}&secret=${encodeURIComponent(PREVIEW_SECRET)}&status=${status}`;
         }
 
         return null;
