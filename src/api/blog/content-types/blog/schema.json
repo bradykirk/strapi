@@ -11,6 +11,16 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "blogstatus": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "draft",
+        "in-review",
+        "approved",
+        "published"
+      ]
+    },
     "category": {
       "type": "enumeration",
       "required": true,
@@ -36,7 +46,7 @@
     "featuredimage": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
@@ -82,16 +92,6 @@
     },
     "keywords": {
       "type": "json"
-    },
-    "blogstatus": {
-      "type": "enumeration",
-      "required": true,
-      "enum": [
-        "draft",
-        "in-review",
-        "approved",
-        "published"
-      ]
     },
     "editorNotes": {
       "type": "text"

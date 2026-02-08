@@ -22,6 +22,7 @@ export default [
             'https://f005.backblazeb2.com',
             'https://*.backblazeb2.com',
           ],
+          'frame-src': ["'self'", 'https://www.youremployeestock.com'],
         },
       },
     },

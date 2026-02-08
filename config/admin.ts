@@ -17,4 +17,24 @@ export default ({ env }) => ({
     nps: env.bool('FLAG_NPS', true),
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
   },
+  preview: {
+    enabled: true,
+    config: {
+      allowedOrigins: [env('CLIENT_URL')],
+      async handler(uid, { documentId, locale, status }) {
+        const document = await strapi.documents(uid).findOne({ documentId });
+        if (!document) return null;
+
+        const CLIENT_URL = env('CLIENT_URL');
+        const PREVIEW_SECRET = env('PREVIEW_SECRET');
+
+        if (uid === 'api::blog.blog') {
+          const pathname = `/${document.category}/${document.slug}`;
+          return `${CLIENT_URL}/api/preview?url=${pathname}&secret=${PREVIEW_SECRET}&status=${status}`;
+        }
+
+        return null;
+      },
+    },
+  },
 });

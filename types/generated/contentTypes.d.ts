@@ -498,8 +498,7 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     editorNotes: Schema.Attribute.Text;
     featuredimage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
-    > &
-      Schema.Attribute.Required;
+    >;
     keywords: Schema.Attribute.JSON;
     lastSyncedAt: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
