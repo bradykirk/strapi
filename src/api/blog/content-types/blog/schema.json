@@ -11,6 +11,28 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "category": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "learn",
+        "guides",
+        "life-events",
+        "comparisons",
+        "tax"
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "metaDescription": {
+      "type": "text"
+    },
     "featuredimage": {
       "type": "media",
       "multiple": false,
@@ -22,17 +44,8 @@
         "audios"
       ]
     },
-    "title": {
-      "type": "string",
-      "required": true
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title"
-    },
-    "excerpt": {
-      "type": "text",
-      "required": true
+    "summary": {
+      "type": "text"
     },
     "content": {
       "type": "dynamiczone",
@@ -47,6 +60,44 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::author.author"
+    },
+    "tags": {
+      "type": "enumeration",
+      "enum": [
+        "basics",
+        "tax",
+        "strategy"
+      ]
+    },
+    "difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ]
+    },
+    "relatedEquityTypes": {
+      "type": "json"
+    },
+    "keywords": {
+      "type": "json"
+    },
+    "blogstatus": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "draft",
+        "in-review",
+        "approved",
+        "published"
+      ]
+    },
+    "editorNotes": {
+      "type": "text"
+    },
+    "lastSyncedAt": {
+      "type": "datetime"
     }
   }
 }

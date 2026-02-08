@@ -473,6 +473,14 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
   };
   attributes: {
     author: Schema.Attribute.Relation<'oneToOne', 'api::author.author'>;
+    blogstatus: Schema.Attribute.Enumeration<
+      ['draft', 'in-review', 'approved', 'published']
+    > &
+      Schema.Attribute.Required;
+    category: Schema.Attribute.Enumeration<
+      ['learn', 'guides', 'life-events', 'comparisons', 'tax']
+    > &
+      Schema.Attribute.Required;
     content: Schema.Attribute.DynamicZone<
       [
         'content.textblock',
@@ -484,16 +492,25 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    excerpt: Schema.Attribute.Text & Schema.Attribute.Required;
+    difficulty: Schema.Attribute.Enumeration<
+      ['beginner', 'intermediate', 'advanced']
+    >;
+    editorNotes: Schema.Attribute.Text;
     featuredimage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
+    keywords: Schema.Attribute.JSON;
+    lastSyncedAt: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'> &
       Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'>;
+    relatedEquityTypes: Schema.Attribute.JSON;
+    slug: Schema.Attribute.String & Schema.Attribute.Required;
+    summary: Schema.Attribute.Text;
+    tags: Schema.Attribute.Enumeration<['basics', 'tax', 'strategy']>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
