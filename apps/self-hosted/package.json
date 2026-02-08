@@ -1,0 +1,19 @@
+{
+  "name": "self-hosted",
+  "private": true,
+  "scripts": {
+    "build": "strapi build",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "deploy": "strapi deploy"
+  },
+  "dependencies": {
+    "@strapi/provider-upload-aws-s3": "workspace:*",
+    "better-sqlite3": "12.4.1",
+    "pg": "^8.16.3"
+  },
+  "strapi": {
+    "uuid": "9580571c-844b-4c7f-8778-11dc2a9f7624",
+    "installId": "0aa2b9912ee2378f69c122a61cd3a12529392ae62a7e043c32c9902751dc3e3d"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blogs",
+  "info": {
+    "singularName": "blog",
+    "pluralName": "blogs",
+    "displayName": "blog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "blogstatus": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "draft",
+        "in-review",
+        "approved",
+        "published"
+      ]
+    },
+    "category": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "learn",
+        "guides",
+        "life-events",
+        "comparisons",
+        "tax"
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "featuredimage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "summary": {
+      "type": "text"
+    },
+    "content": {
+      "type": "dynamiczone",
+      "components": [
+        "content.textblock",
+        "media.image-block",
+        "content.heading-block",
+        "content.quote-block"
+      ]
+    },
+    "author": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::author.author"
+    },
+    "tags": {
+      "type": "enumeration",
+      "enum": [
+        "basics",
+        "tax",
+        "strategy"
+      ]
+    },
+    "difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ]
+    },
+    "relatedEquityTypes": {
+      "type": "json"
+    },
+    "keywords": {
+      "type": "json"
+    },
+    "editorNotes": {
+      "type": "text"
+    },
+    "lastSyncedAt": {
+      "type": "datetime"
+    }
+  }
+}

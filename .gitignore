@@ -66,14 +66,18 @@ $RECYCLE.BIN/
 *.sql
 !.github/workflows/db/**/*.sql
 *.sqlite
+*.sqlite3
 
 ############################
 # Misc.
 ############################
 
 *#
+ssl
 .idea
 nbproject
+apps/self-hosted/public/uploads/*
+!apps/self-hosted/public/uploads/.gitkeep
 .eslintcache
 
 ############################
@@ -164,6 +168,12 @@ CLAUDE.local.md
 examples/**/types/generated
 .nx/cache
 .nx/workspace-data
-
-# Ignore yarn.lock inside templates
 templates/yarn.lock
+
+# App-specific (from legacy)
+.env
+license.txt
+exports
+.strapi
+.strapi-updater.json
+.strapi-cloud.json
