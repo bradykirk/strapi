@@ -3,18 +3,18 @@ export default {
     config: {
       provider: 'aws-s3',
       providerOptions: {
-        baseUrl: process.env.B2_PUBLIC_URL,
+        baseUrl: process.env.S3_PUBLIC_URL,
         s3Options: {
           credentials: {
-            accessKeyId: process.env.B2_ACCESS_KEY_ID,
-            secretAccessKey: process.env.B2_SECRET_ACCESS_KEY,
+            accessKeyId: process.env.S3_ACCESS_KEY_ID,
+            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
           },
-          endpoint: process.env.B2_ENDPOINT,
-          region: process.env.B2_REGION,
+          endpoint: process.env.S3_ENDPOINT,
+          region: process.env.S3_REGION,
           forcePathStyle: true,
         },
         params: {
-          Bucket: process.env.B2_BUCKET_NAME,
+          Bucket: process.env.S3_BUCKET,
         },
       },
     },

@@ -8,20 +8,8 @@ export default [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          'img-src': [
-            "'self'",
-            'data:',
-            'blob:',
-            'https://f005.backblazeb2.com',
-            'https://*.backblazeb2.com',
-          ],
-          'media-src': [
-            "'self'",
-            'data:',
-            'blob:',
-            'https://f005.backblazeb2.com',
-            'https://*.backblazeb2.com',
-          ],
+          'img-src': ["'self'", 'data:', 'blob:', 'https://media.youremployeestock.com'],
+          'media-src': ["'self'", 'data:', 'blob:', 'https://media.youremployeestock.com'],
           'frame-src': ["'self'", 'https://www.youremployeestock.com'],
         },
       },
