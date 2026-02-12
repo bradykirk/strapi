@@ -21,6 +21,7 @@ import { Plus, Drag, Trash, ArrowUp, ArrowDown } from '@strapi/icons';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
+import * as RadixAccordion from '@radix-ui/react-accordion';
 import { styled } from 'styled-components';
 
 import { ItemTypes } from '../../../../../constants/dragAndDrop';
@@ -70,7 +71,9 @@ const RepeatableComponent = ({
   const removeFieldRow = useForm('RepeatableComponent', (state) => state.removeFieldRow);
   const { max = Infinity } = attribute;
 
-  const [collapseToOpen, setCollapseToOpen] = React.useState<string>('');
+  const [collapseToOpen, setCollapseToOpen] = React.useState<string[]>(() =>
+    value.map((v) => v.__temp_key__).filter(Boolean)
+  );
   const [liveText, setLiveText] = React.useState('');
 
   const rulesEngine = createRulesEngine();
@@ -87,12 +90,9 @@ const RepeatableComponent = ({
         .filter((value) => !!value);
 
       if (errorOpenItems && errorOpenItems.length > 0) {
-        setCollapseToOpen((collapseToOpen) => {
-          if (!errorOpenItems.includes(collapseToOpen)) {
-            return errorOpenItems[0];
-          }
-
-          return collapseToOpen;
+        setCollapseToOpen((prev) => {
+          const missing = errorOpenItems.filter((item: string) => !prev.includes(item));
+          return missing.length > 0 ? [...prev, ...missing] : prev;
         });
       }
     }
@@ -130,18 +130,22 @@ const RepeatableComponent = ({
      * When we add a new item to the array, we want to open the collapse.
      */
     if (prevValue && prevValue.length < value.length) {
-      setCollapseToOpen(value[value.length - 1].__temp_key__);
+      setCollapseToOpen((prev) => [...prev, value[value.length - 1].__temp_key__]);
     }
   }, [value, prevValue]);
 
   React.useEffect(() => {
     if (typeof componentTmpKeyWithFocussedField === 'string') {
-      setCollapseToOpen(componentTmpKeyWithFocussedField);
+      setCollapseToOpen((prev) =>
+        prev.includes(componentTmpKeyWithFocussedField)
+          ? prev
+          : [...prev, componentTmpKeyWithFocussedField]
+      );
     }
   }, [componentTmpKeyWithFocussedField]);
 
   const toggleCollapses = () => {
-    setCollapseToOpen('');
+    setCollapseToOpen([]);
   };
 
   const handleClick = () => {
@@ -179,8 +183,8 @@ const RepeatableComponent = ({
     moveFieldRow(name, currentIndex, newIndex);
   };
 
-  const handleValueChange = (key: string) => {
-    setCollapseToOpen(key);
+  const handleValueChange = (keys: string[]) => {
+    setCollapseToOpen(keys);
   };
 
   const getItemPos = (index: number) => `${index + 1} of ${value.length}`;
@@ -251,6 +255,7 @@ const RepeatableComponent = ({
         value={collapseToOpen}
         onValueChange={handleValueChange}
         aria-describedby={ariaDescriptionId}
+        type="multiple"
       >
         {value.map(({ __temp_key__: key, id, ...currentComponentValues }, index) => {
           const nameWithIndex = `${name}.${index}`;
@@ -347,7 +352,7 @@ const RepeatableComponent = ({
   );
 };
 
-const AccordionRoot = styled(Accordion.Root)<{ $error?: string }>`
+const AccordionRoot = styled(RadixAccordion.Root)<{ $error?: string }>`
   border: 1px solid
     ${({ theme, $error }) => ($error ? theme.colors.danger600 : theme.colors.neutral200)};
 `;
