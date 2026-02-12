@@ -11,26 +11,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "blogstatus": {
-      "type": "enumeration",
-      "required": true,
-      "enum": [
-        "draft",
-        "in-review",
-        "approved",
-        "published"
-      ]
-    },
     "category": {
       "type": "enumeration",
       "required": true,
-      "enum": [
-        "learn",
-        "guides",
-        "life-events",
-        "comparisons",
-        "tax"
-      ]
+      "enum": ["learn", "guides", "life-events", "comparisons", "tax"]
     },
     "slug": {
       "type": "string",
@@ -47,12 +31,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "summary": {
       "type": "text"
@@ -73,19 +52,11 @@
     },
     "tags": {
       "type": "enumeration",
-      "enum": [
-        "basics",
-        "tax",
-        "strategy"
-      ]
+      "enum": ["basics", "tax", "strategy"]
     },
     "difficulty": {
       "type": "enumeration",
-      "enum": [
-        "beginner",
-        "intermediate",
-        "advanced"
-      ]
+      "enum": ["beginner", "intermediate", "advanced"]
     },
     "relatedEquityTypes": {
       "type": "json"
