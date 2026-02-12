@@ -1,0 +1,230 @@
+diff --git a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.js b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.js
+index 2fb0fe6..00d7b16 100644
+--- a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.js
++++ b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.js
+@@ -8,6 +8,7 @@ var Icons = require('@strapi/icons');
+ var reactDndHtml5Backend = require('react-dnd-html5-backend');
+ var reactIntl = require('react-intl');
+ var reactRouterDom = require('react-router-dom');
++var RadixAccordion = require('@radix-ui/react-accordion');
+ var styledComponents = require('styled-components');
+ var dragAndDrop = require('../../../../../constants/dragAndDrop.js');
+ var useDocumentContext = require('../../../../../hooks/useDocumentContext.js');
+@@ -39,6 +40,7 @@ function _interopNamespaceDefault(e) {
+ }
+ 
+ var React__namespace = /*#__PURE__*/_interopNamespaceDefault(React);
++var RadixAccordion__namespace = /*#__PURE__*/_interopNamespaceDefault(RadixAccordion);
+ 
+ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, layout })=>{
+     const { toggleNotification } = strapiAdmin.useNotification();
+@@ -54,7 +56,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+     const moveFieldRow = strapiAdmin.useForm('RepeatableComponent', (state)=>state.moveFieldRow);
+     const removeFieldRow = strapiAdmin.useForm('RepeatableComponent', (state)=>state.removeFieldRow);
+     const { max = Infinity } = attribute;
+-    const [collapseToOpen, setCollapseToOpen] = React__namespace.useState('');
++    const [collapseToOpen, setCollapseToOpen] = React__namespace.useState(()=>value.map((v)=>v.__temp_key__).filter(Boolean));
+     const [liveText, setLiveText] = React__namespace.useState('');
+     const rulesEngine = strapiAdmin.createRulesEngine();
+     React__namespace.useEffect(()=>{
+@@ -65,11 +67,12 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+                 return value[idx] ? value[idx].__temp_key__ : null;
+             }).filter((value)=>!!value);
+             if (errorOpenItems && errorOpenItems.length > 0) {
+-                setCollapseToOpen((collapseToOpen)=>{
+-                    if (!errorOpenItems.includes(collapseToOpen)) {
+-                        return errorOpenItems[0];
+-                    }
+-                    return collapseToOpen;
++                setCollapseToOpen((prev)=>{
++                    const missing = errorOpenItems.filter((item)=>!prev.includes(item));
++                    return missing.length > 0 ? [
++                        ...prev,
++                        ...missing
++                    ] : prev;
+                 });
+             }
+         }
+@@ -104,7 +107,10 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         /**
+      * When we add a new item to the array, we want to open the collapse.
+      */ if (prevValue && prevValue.length < value.length) {
+-            setCollapseToOpen(value[value.length - 1].__temp_key__);
++            setCollapseToOpen((prev)=>[
++                    ...prev,
++                    value[value.length - 1].__temp_key__
++                ]);
+         }
+     }, [
+         value,
+@@ -112,13 +118,16 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+     ]);
+     React__namespace.useEffect(()=>{
+         if (typeof componentTmpKeyWithFocussedField === 'string') {
+-            setCollapseToOpen(componentTmpKeyWithFocussedField);
++            setCollapseToOpen((prev)=>prev.includes(componentTmpKeyWithFocussedField) ? prev : [
++                    ...prev,
++                    componentTmpKeyWithFocussedField
++                ]);
+         }
+     }, [
+         componentTmpKeyWithFocussedField
+     ]);
+     const toggleCollapses = ()=>{
+-        setCollapseToOpen('');
++        setCollapseToOpen([]);
+     };
+     const handleClick = ()=>{
+         if (value.length < max) {
+@@ -146,8 +155,8 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         }));
+         moveFieldRow(name, currentIndex, newIndex);
+     };
+-    const handleValueChange = (key)=>{
+-        setCollapseToOpen(key);
++    const handleValueChange = (keys)=>{
++        setCollapseToOpen(keys);
+     };
+     const getItemPos = (index)=>`${index + 1} of ${value.length}`;
+     const handleCancel = (index)=>{
+@@ -204,6 +213,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+                 value: collapseToOpen,
+                 onValueChange: handleValueChange,
+                 "aria-describedby": ariaDescriptionId,
++                type: "multiple",
+                 children: [
+                     value.map(({ __temp_key__: key, id, ...currentComponentValues }, index)=>{
+                         const nameWithIndex = `${name}.${index}`;
+@@ -287,7 +297,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         ]
+     });
+ };
+-const AccordionRoot = styledComponents.styled(designSystem.Accordion.Root)`
++const AccordionRoot = styledComponents.styled(RadixAccordion__namespace.Root)`
+   border: 1px solid
+     ${({ theme, $error })=>$error ? theme.colors.danger600 : theme.colors.neutral200};
+ `;
+diff --git a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.mjs b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.mjs
+index 21a23cf..1645348 100644
+--- a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.mjs
++++ b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/Component/Repeatable.mjs
+@@ -6,6 +6,7 @@ import { Plus, Trash, Drag, ArrowUp, ArrowDown } from '@strapi/icons';
+ import { getEmptyImage } from 'react-dnd-html5-backend';
+ import { useIntl } from 'react-intl';
+ import { useLocation } from 'react-router-dom';
++import * as RadixAccordion from '@radix-ui/react-accordion';
+ import { styled } from 'styled-components';
+ import { ItemTypes } from '../../../../../constants/dragAndDrop.mjs';
+ import { useDocumentContext } from '../../../../../hooks/useDocumentContext.mjs';
+@@ -33,7 +34,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+     const moveFieldRow = useForm('RepeatableComponent', (state)=>state.moveFieldRow);
+     const removeFieldRow = useForm('RepeatableComponent', (state)=>state.removeFieldRow);
+     const { max = Infinity } = attribute;
+-    const [collapseToOpen, setCollapseToOpen] = React.useState('');
++    const [collapseToOpen, setCollapseToOpen] = React.useState(()=>value.map((v)=>v.__temp_key__).filter(Boolean));
+     const [liveText, setLiveText] = React.useState('');
+     const rulesEngine = createRulesEngine();
+     React.useEffect(()=>{
+@@ -44,11 +45,12 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+                 return value[idx] ? value[idx].__temp_key__ : null;
+             }).filter((value)=>!!value);
+             if (errorOpenItems && errorOpenItems.length > 0) {
+-                setCollapseToOpen((collapseToOpen)=>{
+-                    if (!errorOpenItems.includes(collapseToOpen)) {
+-                        return errorOpenItems[0];
+-                    }
+-                    return collapseToOpen;
++                setCollapseToOpen((prev)=>{
++                    const missing = errorOpenItems.filter((item)=>!prev.includes(item));
++                    return missing.length > 0 ? [
++                        ...prev,
++                        ...missing
++                    ] : prev;
+                 });
+             }
+         }
+@@ -83,7 +85,10 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         /**
+      * When we add a new item to the array, we want to open the collapse.
+      */ if (prevValue && prevValue.length < value.length) {
+-            setCollapseToOpen(value[value.length - 1].__temp_key__);
++            setCollapseToOpen((prev)=>[
++                    ...prev,
++                    value[value.length - 1].__temp_key__
++                ]);
+         }
+     }, [
+         value,
+@@ -91,13 +96,16 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+     ]);
+     React.useEffect(()=>{
+         if (typeof componentTmpKeyWithFocussedField === 'string') {
+-            setCollapseToOpen(componentTmpKeyWithFocussedField);
++            setCollapseToOpen((prev)=>prev.includes(componentTmpKeyWithFocussedField) ? prev : [
++                    ...prev,
++                    componentTmpKeyWithFocussedField
++                ]);
+         }
+     }, [
+         componentTmpKeyWithFocussedField
+     ]);
+     const toggleCollapses = ()=>{
+-        setCollapseToOpen('');
++        setCollapseToOpen([]);
+     };
+     const handleClick = ()=>{
+         if (value.length < max) {
+@@ -125,8 +133,8 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         }));
+         moveFieldRow(name, currentIndex, newIndex);
+     };
+-    const handleValueChange = (key)=>{
+-        setCollapseToOpen(key);
++    const handleValueChange = (keys)=>{
++        setCollapseToOpen(keys);
+     };
+     const getItemPos = (index)=>`${index + 1} of ${value.length}`;
+     const handleCancel = (index)=>{
+@@ -183,6 +191,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+                 value: collapseToOpen,
+                 onValueChange: handleValueChange,
+                 "aria-describedby": ariaDescriptionId,
++                type: "multiple",
+                 children: [
+                     value.map(({ __temp_key__: key, id, ...currentComponentValues }, index)=>{
+                         const nameWithIndex = `${name}.${index}`;
+@@ -266,7 +275,7 @@ const RepeatableComponent = ({ attribute, disabled, name, mainField, children, l
+         ]
+     });
+ };
+-const AccordionRoot = styled(Accordion.Root)`
++const AccordionRoot = styled(RadixAccordion.Root)`
+   border: 1px solid
+     ${({ theme, $error })=>$error ? theme.colors.danger600 : theme.colors.neutral200};
+ `;
+diff --git a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.js b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.js
+index d99e551..337ac13 100644
+--- a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.js
++++ b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.js
+@@ -98,7 +98,7 @@ const DynamicComponent = ({ componentUid, disabled, index, name, onRemoveCompone
+    * so a unique value for their state is enough.
+    */ const accordionValue = React__namespace.useId();
+     const { value = [], rawError } = strapiAdmin.useField(`${name}.${index}`);
+-    const [collapseToOpen, setCollapseToOpen] = React__namespace.useState('');
++    const [collapseToOpen, setCollapseToOpen] = React__namespace.useState(accordionValue);
+     React__namespace.useEffect(()=>{
+         if (rawError && value) {
+             setCollapseToOpen(accordionValue);
+diff --git a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.mjs b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.mjs
+index 706def8..127d3be 100644
+--- a/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.mjs
++++ b/node_modules/@strapi/content-manager/dist/admin/pages/EditView/components/FormInputs/DynamicZone/DynamicComponent.mjs
+@@ -77,7 +77,7 @@ const DynamicComponent = ({ componentUid, disabled, index, name, onRemoveCompone
+    * so a unique value for their state is enough.
+    */ const accordionValue = React.useId();
+     const { value = [], rawError } = useField(`${name}.${index}`);
+-    const [collapseToOpen, setCollapseToOpen] = React.useState('');
++    const [collapseToOpen, setCollapseToOpen] = React.useState(accordionValue);
+     React.useEffect(()=>{
+         if (rawError && value) {
+             setCollapseToOpen(accordionValue);

@@ -2,6 +2,7 @@
   "name": "self-hosted",
   "private": true,
   "scripts": {
+    "postinstall": "patch-package",
     "build": "strapi build",
     "develop": "strapi develop",
     "start": "strapi start",
@@ -11,6 +12,7 @@
     "@strapi/plugin-users-permissions": "workspace:*",
     "@strapi/provider-upload-aws-s3": "workspace:*",
     "@strapi/strapi": "workspace:*",
+    "patch-package": "^8.0.0",
     "better-sqlite3": "12.4.1",
     "pg": "^8.16.3",
     "react": "18.3.1",
